@@ -2,23 +2,75 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 
 class Faq extends Model
 {
-    use HasFactory;
+    protected $table = 'faqs';
 
-    protected $fillable = ['user_id', 'question', 'slug', 'answer', 'published_at'];
-    protected $casts = ['published_at' => 'datetime'];
+    protected $fillable = [
+        'user_id',
+        'question',
+        'slug',
+        'answer',
+        'published_at',
+    ];
 
-    public function scopePublished($q)
+    protected $casts = [
+        'published_at' => 'datetime',
+    ];
+
+    /* --------------------------------------------------------
+     | Relações
+     |---------------------------------------------------------*/
+    public function steps(): HasMany
     {
-        return $q->whereNotNull('published_at')->where('published_at', '<=', now());
+        return $this->hasMany(FaqStep::class, 'faq_id')->orderBy('step_number');
     }
 
-    public function getRouteKeyName()
+    /* --------------------------------------------------------
+     | Ajudantes
+     |---------------------------------------------------------*/
+    public function isPublished(): bool
     {
-        return 'slug';
+        return (bool) $this->published_at && Carbon::parse($this->published_at)->isPast();
+    }
+
+    /* --------------------------------------------------------
+     | Escopos (agora permite ->published())
+     |---------------------------------------------------------*/
+
+    /**
+     * Escopo para filtrar apenas FAQs publicados (published_at não nulo e no passado).
+     *
+     * Uso: Faq::published()->get();
+     */
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', Carbon::now());
+    }
+
+    /**
+     * (Opcional) Escopo de busca textual simples.
+     *
+     * Uso: Faq::search($q)->get();
+     */
+    public function scopeSearch(Builder $query, ?string $term): Builder
+    {
+        $term = trim((string) $term);
+        if ($term === '') {
+            return $query;
+        }
+
+        return $query->where(function (Builder $q) use ($term) {
+            $q->where('question', 'like', "%{$term}%")
+              ->orWhere('answer', 'like', "%{$term}%")
+              ->orWhere('slug', 'like', "%{$term}%");
+        });
     }
 }

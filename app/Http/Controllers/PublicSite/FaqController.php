@@ -27,12 +27,15 @@ class FaqController extends Controller
                     }
                 });
             })
+            // carrega os passos ordenados e já traz a contagem
+            ->with(['steps' => fn ($q) => $q->orderBy('step_number')])
+            ->withCount('steps')
             ->when(Schema::hasColumn($table, 'position'), fn ($q) => $q->orderBy('position'))
             ->when(!Schema::hasColumn($table, 'position'), function ($q) use ($table) {
                 if (Schema::hasColumn($table, 'published_at')) {
                     $q->orderByDesc('published_at');
                 }
-                $q->latest('updated_at');
+                return $q->latest('updated_at');
             })
             ->paginate(20)
             ->withQueryString();
@@ -45,6 +48,10 @@ class FaqController extends Controller
         if (empty($faq->published_at) || Carbon::parse($faq->published_at)->isFuture()) {
             abort(404);
         }
+
+        // garante passos carregados e ordenados no show
+        $faq->load(['steps' => fn ($q) => $q->orderBy('step_number')]);
+
         return view('faqs.show', compact('faq'));
     }
 }

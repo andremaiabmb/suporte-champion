@@ -1,0 +1,2131 @@
+{
+    "type": "database",
+    "name": "database_new",
+    "objects": [
+        {
+            "type": "table",
+            "database": null,
+            "name": "cache",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"cache\" (\"key\" varchar not null, \"value\" text not null, \"expiration\" integer not null, primary key (\"key\"))",
+            "columns": [
+                {
+                    "name": "key",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "value",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "expiration",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "PRIMARY KEY",
+                    "definition": "primary key (\"key\")"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "cache_locks",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"cache_locks\" (\"key\" varchar not null, \"owner\" varchar not null, \"expiration\" integer not null, primary key (\"key\"))",
+            "columns": [
+                {
+                    "name": "key",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "owner",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "expiration",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "PRIMARY KEY",
+                    "definition": "primary key (\"key\")"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "event_attendance",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"event_attendance\" (\"id\" integer primary key autoincrement not null, \"event_id\" integer not null, \"user_id\" integer not null, \"checked_in_at\" datetime not null default CURRENT_TIMESTAMP, foreign key(\"event_id\") references \"events\"(\"id\") on delete cascade, foreign key(\"user_id\") references \"users\"(\"id\") on delete cascade)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "event_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "user_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "checked_in_at",
+                    "type": "datetime",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default CURRENT_TIMESTAMP"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"event_id\") references \"events\"(\"id\") on delete cascade"
+                },
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"user_id\") references \"users\"(\"id\") on delete cascade"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "event_registrations",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"event_registrations\" (\"id\" integer primary key autoincrement not null, \"event_id\" integer not null, \"user_id\" integer not null, \"status\" varchar not null default 'confirmed', \"created_at\" datetime, \"updated_at\" datetime, foreign key(\"event_id\") references \"events\"(\"id\") on delete cascade, foreign key(\"user_id\") references \"users\"(\"id\") on delete cascade)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "event_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "user_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "status",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default 'confirmed'"
+                        }
+                    ]
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"event_id\") references \"events\"(\"id\") on delete cascade"
+                },
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"user_id\") references \"users\"(\"id\") on delete cascade"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "event_session_attendance",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"event_session_attendance\" (\"id\" integer primary key autoincrement not null, \"event_session_id\" integer not null, \"user_id\" integer not null, \"checked_in_at\" datetime not null default CURRENT_TIMESTAMP, foreign key(\"event_session_id\") references \"event_sessions\"(\"id\") on delete cascade, foreign key(\"user_id\") references \"users\"(\"id\") on delete cascade)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "event_session_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "user_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "checked_in_at",
+                    "type": "datetime",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default CURRENT_TIMESTAMP"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"event_session_id\") references \"event_sessions\"(\"id\") on delete cascade"
+                },
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"user_id\") references \"users\"(\"id\") on delete cascade"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "event_sessions",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"event_sessions\" (\"id\" integer primary key autoincrement not null, \"event_id\" integer not null, \"session_date\" date not null, \"starts_at\" datetime, \"ends_at\" datetime, \"created_at\" datetime, \"updated_at\" datetime, foreign key(\"event_id\") references \"events\"(\"id\") on delete cascade)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "event_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "session_date",
+                    "type": "date",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "starts_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "ends_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"event_id\") references \"events\"(\"id\") on delete cascade"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "events",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"events\" (\"id\" integer primary key autoincrement not null, \"title\" varchar not null, \"starts_at\" datetime, \"ends_at\" datetime, \"created_at\" datetime, \"updated_at\" datetime, \"location\" varchar, \"cover_path\" varchar)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "title",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "starts_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "ends_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "location",
+                    "type": "varchar"
+                },
+                {
+                    "name": "cover_path",
+                    "type": "varchar"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "failed_jobs",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"failed_jobs\" (\"id\" integer primary key autoincrement not null, \"uuid\" varchar not null, \"connection\" text not null, \"queue\" text not null, \"payload\" text not null, \"exception\" text not null, \"failed_at\" datetime not null default CURRENT_TIMESTAMP)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "uuid",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "connection",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "queue",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "payload",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "exception",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "failed_at",
+                    "type": "datetime",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default CURRENT_TIMESTAMP"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "faq_steps",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"faq_steps\" (\"id\" integer primary key autoincrement not null, \"faq_id\" integer not null, \"step_number\" integer not null, \"title\" varchar, \"body\" text, \"image_path\" varchar, \"image_caption\" varchar, \"created_at\" datetime, \"updated_at\" datetime, foreign key(\"faq_id\") references \"faqs\"(\"id\") on delete cascade)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "faq_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "step_number",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "title",
+                    "type": "varchar"
+                },
+                {
+                    "name": "body",
+                    "type": "text"
+                },
+                {
+                    "name": "image_path",
+                    "type": "varchar"
+                },
+                {
+                    "name": "image_caption",
+                    "type": "varchar"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"faq_id\") references \"faqs\"(\"id\") on delete cascade"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "faqs",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"faqs\" (\"id\" integer primary key autoincrement not null, \"user_id\" integer, \"question\" varchar not null, \"slug\" varchar not null, \"answer\" text, \"published_at\" datetime, \"created_at\" datetime, \"updated_at\" datetime, foreign key(\"user_id\") references \"users\"(\"id\") on delete set null)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "user_id",
+                    "type": "integer"
+                },
+                {
+                    "name": "question",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "slug",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "answer",
+                    "type": "text"
+                },
+                {
+                    "name": "published_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"user_id\") references \"users\"(\"id\") on delete set null"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "job_batches",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"job_batches\" (\"id\" varchar not null, \"name\" varchar not null, \"total_jobs\" integer not null, \"pending_jobs\" integer not null, \"failed_jobs\" integer not null, \"failed_job_ids\" text not null, \"options\" text, \"cancelled_at\" integer, \"created_at\" integer not null, \"finished_at\" integer, primary key (\"id\"))",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "total_jobs",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "pending_jobs",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "failed_jobs",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "failed_job_ids",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "options",
+                    "type": "text"
+                },
+                {
+                    "name": "cancelled_at",
+                    "type": "integer"
+                },
+                {
+                    "name": "created_at",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "finished_at",
+                    "type": "integer"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "PRIMARY KEY",
+                    "definition": "primary key (\"id\")"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "jobs",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"jobs\" (\"id\" integer primary key autoincrement not null, \"queue\" varchar not null, \"payload\" text not null, \"attempts\" integer not null, \"reserved_at\" integer, \"available_at\" integer not null, \"created_at\" integer not null)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "queue",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "payload",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "attempts",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "reserved_at",
+                    "type": "integer"
+                },
+                {
+                    "name": "available_at",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "created_at",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "migrations",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"migrations\" (\"id\" integer primary key autoincrement not null, \"migration\" varchar not null, \"batch\" integer not null)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "migration",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "batch",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "password_reset_tokens",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"password_reset_tokens\" (\"email\" varchar not null, \"token\" varchar not null, \"created_at\" datetime, primary key (\"email\"))",
+            "columns": [
+                {
+                    "name": "email",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "token",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "PRIMARY KEY",
+                    "definition": "primary key (\"email\")"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "posts",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"posts\" (\"id\" integer primary key autoincrement not null, \"user_id\" integer, \"title\" varchar not null, \"slug\" varchar not null, \"excerpt\" varchar, \"content\" text not null, \"published_at\" datetime, \"created_at\" datetime, \"updated_at\" datetime, \"body\" text, \"cover_path\" varchar, foreign key(\"user_id\") references \"users\"(\"id\") on delete set null)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "user_id",
+                    "type": "integer"
+                },
+                {
+                    "name": "title",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "slug",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "excerpt",
+                    "type": "varchar"
+                },
+                {
+                    "name": "content",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "published_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "body",
+                    "type": "text"
+                },
+                {
+                    "name": "cover_path",
+                    "type": "varchar"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"user_id\") references \"users\"(\"id\") on delete set null"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "sector_user",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"sector_user\" (\"id\" integer primary key autoincrement not null, \"sector_id\" integer not null, \"user_id\" integer not null, \"created_at\" datetime, \"updated_at\" datetime, foreign key(\"sector_id\") references \"sectors\"(\"id\") on delete cascade, foreign key(\"user_id\") references \"users\"(\"id\") on delete cascade)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "sector_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "user_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"sector_id\") references \"sectors\"(\"id\") on delete cascade"
+                },
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"user_id\") references \"users\"(\"id\") on delete cascade"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "sectors",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"sectors\" (\"id\" integer primary key autoincrement not null, \"name\" varchar not null, \"slug\" varchar not null, \"email\" varchar, \"is_active\" tinyint(1) not null default '1', \"created_at\" datetime, \"updated_at\" datetime)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "slug",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "email",
+                    "type": "varchar"
+                },
+                {
+                    "name": "is_active",
+                    "type": "tinyint",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default '1'"
+                        }
+                    ]
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "sessions",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"sessions\" (\"id\" varchar not null, \"user_id\" integer, \"ip_address\" varchar, \"user_agent\" text, \"payload\" text not null, \"last_activity\" integer not null, primary key (\"id\"))",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "user_id",
+                    "type": "integer"
+                },
+                {
+                    "name": "ip_address",
+                    "type": "varchar"
+                },
+                {
+                    "name": "user_agent",
+                    "type": "text"
+                },
+                {
+                    "name": "payload",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "last_activity",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "PRIMARY KEY",
+                    "definition": "primary key (\"id\")"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "support_messages",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"support_messages\" (\"id\" integer primary key autoincrement not null, \"ticket_id\" integer not null, \"sender_id\" integer not null, \"recipient_id\" integer, \"body\" text not null, \"read_at\" datetime, \"created_at\" datetime, \"updated_at\" datetime, foreign key(\"ticket_id\") references \"support_tickets\"(\"id\") on delete cascade, foreign key(\"sender_id\") references \"users\"(\"id\") on delete cascade, foreign key(\"recipient_id\") references \"users\"(\"id\") on delete set null)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "ticket_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "sender_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "recipient_id",
+                    "type": "integer"
+                },
+                {
+                    "name": "body",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "read_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"ticket_id\") references \"support_tickets\"(\"id\") on delete cascade"
+                },
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"sender_id\") references \"users\"(\"id\") on delete cascade"
+                },
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"recipient_id\") references \"users\"(\"id\") on delete set null"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "support_tickets",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"support_tickets\" (\"id\" integer primary key autoincrement not null, \"user_id\" integer not null, \"subject\" varchar not null, \"category\" varchar not null, \"description\" text not null, \"status\" varchar not null default 'open', \"assigned_to_id\" integer, \"created_at\" datetime, \"updated_at\" datetime, foreign key(\"user_id\") references \"users\"(\"id\") on delete cascade, foreign key(\"assigned_to_id\") references \"users\"(\"id\") on delete set null)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "user_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "subject",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "category",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "description",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "status",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default 'open'"
+                        }
+                    ]
+                },
+                {
+                    "name": "assigned_to_id",
+                    "type": "integer"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"user_id\") references \"users\"(\"id\") on delete cascade"
+                },
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"assigned_to_id\") references \"users\"(\"id\") on delete set null"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "ticket_attachments",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"ticket_attachments\" (\"id\" integer primary key autoincrement not null, \"ticket_id\" integer not null, \"message_id\" integer, \"original_name\" varchar not null, \"disk\" varchar not null default 'public', \"path\" varchar not null, \"size\" integer not null default '0', \"mime\" varchar, \"created_at\" datetime, \"updated_at\" datetime, foreign key(\"ticket_id\") references \"tickets\"(\"id\") on delete cascade, foreign key(\"message_id\") references \"ticket_messages\"(\"id\") on delete set null)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "ticket_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "message_id",
+                    "type": "integer"
+                },
+                {
+                    "name": "original_name",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "disk",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default 'public'"
+                        }
+                    ]
+                },
+                {
+                    "name": "path",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "size",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default '0'"
+                        }
+                    ]
+                },
+                {
+                    "name": "mime",
+                    "type": "varchar"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"ticket_id\") references \"tickets\"(\"id\") on delete cascade"
+                },
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"message_id\") references \"ticket_messages\"(\"id\") on delete set null"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "ticket_messages",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"ticket_messages\" (\"id\" integer primary key autoincrement not null, \"ticket_id\" integer not null, \"user_id\" integer, \"message\" text not null, \"is_internal\" tinyint(1) not null default '0', \"created_at\" datetime, \"updated_at\" datetime, foreign key(\"ticket_id\") references \"tickets\"(\"id\") on delete cascade, foreign key(\"user_id\") references \"users\"(\"id\") on delete set null)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "ticket_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "user_id",
+                    "type": "integer"
+                },
+                {
+                    "name": "message",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "is_internal",
+                    "type": "tinyint",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default '0'"
+                        }
+                    ]
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"ticket_id\") references \"tickets\"(\"id\") on delete cascade"
+                },
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"user_id\") references \"users\"(\"id\") on delete set null"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "ticket_transitions",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"ticket_transitions\" (\"id\" integer primary key autoincrement not null, \"ticket_id\" integer not null, \"user_id\" integer, \"field\" varchar not null, \"old_value\" varchar, \"new_value\" varchar, \"created_at\" datetime, \"updated_at\" datetime, foreign key(\"ticket_id\") references \"tickets\"(\"id\") on delete cascade, foreign key(\"user_id\") references \"users\"(\"id\") on delete set null)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "ticket_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "user_id",
+                    "type": "integer"
+                },
+                {
+                    "name": "field",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "old_value",
+                    "type": "varchar"
+                },
+                {
+                    "name": "new_value",
+                    "type": "varchar"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"ticket_id\") references \"tickets\"(\"id\") on delete cascade"
+                },
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"user_id\") references \"users\"(\"id\") on delete set null"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "tickets",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"tickets\" (\"id\" integer primary key autoincrement not null, \"code\" varchar not null, \"user_id\" integer not null, \"sector_id\" integer, \"assignee_id\" integer, \"subject\" varchar not null, \"description\" text not null, \"priority\" varchar check (\"priority\" in ('low', 'normal', 'high', 'urgent')) not null default 'normal', \"status\" varchar check (\"status\" in ('open', 'in_progress', 'waiting', 'resolved', 'closed', 'reopened')) not null default 'open', \"resolved_at\" datetime, \"closed_at\" datetime, \"created_at\" datetime, \"updated_at\" datetime, foreign key(\"user_id\") references \"users\"(\"id\") on delete cascade, foreign key(\"sector_id\") references \"sectors\"(\"id\") on delete set null, foreign key(\"assignee_id\") references \"users\"(\"id\") on delete set null)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "code",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "user_id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "sector_id",
+                    "type": "integer"
+                },
+                {
+                    "name": "assignee_id",
+                    "type": "integer"
+                },
+                {
+                    "name": "subject",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "description",
+                    "type": "text",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "priority",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "CHECK",
+                            "definition": "check (\"priority\" in ('low', 'normal', 'high', 'urgent')) "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default 'normal'"
+                        }
+                    ]
+                },
+                {
+                    "name": "status",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "CHECK",
+                            "definition": "check (\"status\" in ('open', 'in_progress', 'waiting', 'resolved', 'closed', 'reopened')) "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default 'open'"
+                        }
+                    ]
+                },
+                {
+                    "name": "resolved_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "closed_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                }
+            ],
+            "constraints": [
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"user_id\") references \"users\"(\"id\") on delete cascade"
+                },
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"sector_id\") references \"sectors\"(\"id\") on delete set null"
+                },
+                {
+                    "type": "FOREIGN KEY",
+                    "definition": "foreign key(\"assignee_id\") references \"users\"(\"id\") on delete set null"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "table",
+            "database": null,
+            "name": "users",
+            "withoutRowId": false,
+            "strict": false,
+            "ddl": "CREATE TABLE \"users\" (\"id\" integer primary key autoincrement not null, \"name\" varchar not null, \"email\" varchar not null, \"email_verified_at\" datetime, \"password\" varchar not null, \"remember_token\" varchar, \"created_at\" datetime, \"updated_at\" datetime, \"is_admin\" tinyint(1) not null default '0', \"qr_token\" varchar, \"qr_image\" varchar, \"locale\" varchar not null default 'pt', \"role\" varchar not null default 'aluno', \"city\" varchar, \"country_of_origin\" varchar, \"date_of_birth\" date)",
+            "columns": [
+                {
+                    "name": "id",
+                    "type": "integer",
+                    "constraints": [
+                        {
+                            "type": "PRIMARY KEY",
+                            "definition": "primary key autoincrement "
+                        },
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "name",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "email",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "email_verified_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "password",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null"
+                        }
+                    ]
+                },
+                {
+                    "name": "remember_token",
+                    "type": "varchar"
+                },
+                {
+                    "name": "created_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "updated_at",
+                    "type": "datetime"
+                },
+                {
+                    "name": "is_admin",
+                    "type": "tinyint",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default '0'"
+                        }
+                    ]
+                },
+                {
+                    "name": "qr_token",
+                    "type": "varchar"
+                },
+                {
+                    "name": "qr_image",
+                    "type": "varchar"
+                },
+                {
+                    "name": "locale",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default 'pt'"
+                        }
+                    ]
+                },
+                {
+                    "name": "role",
+                    "type": "varchar",
+                    "constraints": [
+                        {
+                            "type": "NOT NULL",
+                            "definition": "not null "
+                        },
+                        {
+                            "type": "DEFAULT",
+                            "definition": "default 'aluno'"
+                        }
+                    ]
+                },
+                {
+                    "name": "city",
+                    "type": "varchar"
+                },
+                {
+                    "name": "country_of_origin",
+                    "type": "varchar"
+                },
+                {
+                    "name": "date_of_birth",
+                    "type": "date"
+                }
+            ],
+            "rows": [
+            ]
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "event_attendance_event_id_user_id_unique",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX \"event_attendance_event_id_user_id_unique\" on \"event_attendance\" (\"event_id\", \"user_id\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "event_session_attendance_event_session_id_user_id_unique",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX \"event_session_attendance_event_session_id_user_id_unique\" on \"event_session_attendance\" (\"event_session_id\", \"user_id\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "event_sessions_event_id_session_date_unique",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX \"event_sessions_event_id_session_date_unique\" on \"event_sessions\" (\"event_id\", \"session_date\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "event_user_unique",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX \"event_user_unique\" on \"event_registrations\" (\"event_id\", \"user_id\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "failed_jobs_uuid_unique",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX \"failed_jobs_uuid_unique\" on \"failed_jobs\" (\"uuid\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "faqs_published_at_index",
+            "unique": false,
+            "ddl": "CREATE INDEX \"faqs_published_at_index\" on \"faqs\" (\"published_at\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "faqs_slug_unique",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX \"faqs_slug_unique\" on \"faqs\" (\"slug\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "jobs_queue_index",
+            "unique": false,
+            "ddl": "CREATE INDEX \"jobs_queue_index\" on \"jobs\" (\"queue\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "posts_published_at_index",
+            "unique": false,
+            "ddl": "CREATE INDEX \"posts_published_at_index\" on \"posts\" (\"published_at\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "posts_published_created_index",
+            "unique": false,
+            "ddl": "CREATE INDEX \"posts_published_created_index\" on \"posts\" (\"published_at\", \"created_at\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "posts_slug_unique",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX \"posts_slug_unique\" on \"posts\" (\"slug\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "sector_user_sector_id_user_id_unique",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX \"sector_user_sector_id_user_id_unique\" on \"sector_user\" (\"sector_id\", \"user_id\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "sectors_slug_unique",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX \"sectors_slug_unique\" on \"sectors\" (\"slug\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "sessions_last_activity_index",
+            "unique": false,
+            "ddl": "CREATE INDEX \"sessions_last_activity_index\" on \"sessions\" (\"last_activity\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "sessions_user_id_index",
+            "unique": false,
+            "ddl": "CREATE INDEX \"sessions_user_id_index\" on \"sessions\" (\"user_id\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "support_messages_recipient_id_read_at_index",
+            "unique": false,
+            "ddl": "CREATE INDEX \"support_messages_recipient_id_read_at_index\" on \"support_messages\" (\"recipient_id\", \"read_at\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "support_tickets_category_index",
+            "unique": false,
+            "ddl": "CREATE INDEX \"support_tickets_category_index\" on \"support_tickets\" (\"category\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "support_tickets_status_index",
+            "unique": false,
+            "ddl": "CREATE INDEX \"support_tickets_status_index\" on \"support_tickets\" (\"status\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "tickets_code_unique",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX \"tickets_code_unique\" on \"tickets\" (\"code\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "users_email_unique",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX \"users_email_unique\" on \"users\" (\"email\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "users_locale_index",
+            "unique": false,
+            "ddl": "CREATE INDEX \"users_locale_index\" on \"users\" (\"locale\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "users_qr_token_unique",
+            "unique": true,
+            "ddl": "CREATE UNIQUE INDEX \"users_qr_token_unique\" on \"users\" (\"qr_token\")"
+        },
+        {
+            "type": "index",
+            "database": null,
+            "name": "users_role_index",
+            "unique": false,
+            "ddl": "CREATE INDEX \"users_role_index\" on \"users\" (\"role\")"
+        }
+    ]
+}

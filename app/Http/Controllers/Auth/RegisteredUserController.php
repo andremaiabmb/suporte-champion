@@ -9,13 +9,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
+     * Tela de registro
      */
     public function create(): View
     {
@@ -23,28 +24,42 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * Processa o cadastro
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+        $validated = $request->validate([
+            'name'              => ['required','string','max:255'],
+            'city'              => ['required','string','max:120'],
+            'country_of_origin' => ['required','string','max:100'],
+            'date_of_birth'     => ['required','date','before:today','after:1900-01-01'],
+            'email'             => [
+                'required','string','email','max:255','unique:'.User::class,
+                // Domínio @champion.edu estrito
+                function($attr, $value, $fail) {
+                    if (!preg_match('/@champion\.edu\z/i', $value)) {
+                        $fail('O e-mail deve ser do domínio @champion.edu.');
+                    }
+                },
+            ],
+            'password'          => ['required', 'confirmed', PasswordRule::min(8)],
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name'              => $validated['name'],
+            'email'             => $validated['email'],
+            'password'          => Hash::make($validated['password']),
+            'city'              => $validated['city'],
+            'country_of_origin' => $validated['country_of_origin'],
+            'date_of_birth'     => $validated['date_of_birth'],
+            'role'              => 'aluno', // padrão ao se auto-registrar
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Se usa verificação de e-mail, o middleware 'verified' vai exigir confirmação no acesso ao dashboard
+        return redirect()->intended(route('home'));
     }
 }

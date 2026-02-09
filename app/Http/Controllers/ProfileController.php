@@ -2,59 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
+    /** Perfil com bloco “Meu QR Code” (usa SEMPRE users.qr_token) */
+    public function show(Request $request)
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
-    }
-
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
-    }
-
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
-
         $user = $request->user();
 
-        Auth::logout();
+        // Se ainda não houver qr_token, gera e salva uma única vez
+        if (empty($user->qr_token)) {
+            $base = 'U'.$user->id.'-'.substr(hash('crc32b', $user->email.$user->id), 0, 8);
+            $token = $base; $i = 0;
+            while (DB::table('users')->where('qr_token', $token)->where('id','!=',$user->id)->exists()) {
+                $i++; $token = $base.'-'.$i;
+            }
+            $user->qr_token = $token;
+            $user->save();
+        }
 
-        $user->delete();
+        return view('profile.show', [
+            'user'   => $user,
+            'qrCode' => $user->qr_token,   // <- vem do banco
+            'qrImg'  => $user->qr_image,   // <- se você quiser exibir imagem pronta
+        ]);
+    }
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+    /** Página limpa só com o QR (para imprimir/mostrar) */
+    public function qrPage(Request $request)
+    {
+        $user = $request->user();
 
-        return Redirect::to('/');
+        if (empty($user->qr_token)) {
+            return redirect()->route('profile.show')->with('status', 'QR do perfil foi inicializado.');
+        }
+
+        return view('profile.qr', [
+            'user'   => $user,
+            'qrCode' => $user->qr_token,
+            'qrImg'  => $user->qr_image,
+        ]);
     }
 }

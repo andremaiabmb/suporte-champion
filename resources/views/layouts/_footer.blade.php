@@ -1,9 +1,15 @@
-<footer class="mt-16 border-t border-slate-200 dark:border-white/10 bg-white/70 dark:bg-slate-900/70 backdrop-blur">
-  <div class="container py-8 text-sm text-slate-600 dark:text-slate-300 flex flex-col sm:flex-row items-center justify-between gap-3">
-    <p>© {{ date('Y') }} Suporte ao Aluno. Todos os direitos reservados.</p>
-    <div class="flex items-center gap-4">
-      <a href="{{ route('faqs.index') }}" class="hover:underline">FAQ</a>
-      <a href="{{ route('home') }}#contato" class="hover:underline">Contato</a>
+<footer class="mt-8 border-t border-slate-200 dark:border-white/10">
+  <div class="container">
+    <div class="py-6 text-sm text-slate-600 dark:text-slate-400 flex items-center justify-between">
+      <span>© {{ date('Y') }} {{ __('footer.brand') }}</span>
+      <nav class="flex gap-4">
+        <a href="{{ route('faqs.index') }}" class="hover:text-slate-900 dark:hover:text-white">
+          {{ __('footer.faqs') }}
+        </a>
+        <a href="#eventos" class="hover:text-slate-900 dark:hover:text-white">
+          {{ __('footer.events') }}
+        </a>
+      </nav>
     </div>
   </div>
 </footer>
